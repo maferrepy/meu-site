@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>King Angus Burgers</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+
+@page{size:A4;margin:0}
+
+body{
+margin:0;
+background:#000;
+font-family:'Roboto Condensed',sans-serif;
+color:#fff;
+}
+
+.menu{
+width:210mm;
+height:297mm;
+margin:auto;
+padding:15mm 12mm;
+box-sizing:border-box;
+}
+
+.title{
+font-family:'Oswald';
+font-size:70px;
+text-align:center;
+letter-spacing:4px;
+}
+
+.subtitle{
+text-align:center;
+color:#d62828;
+font-size:30px;
+margin-top:-10px;
+}
+
+.brandline{
+text-align:center;
+font-size:18px;
+margin:6px 0;
+}
+
+.slogan{
+background:#d62828;
+text-align:center;
+padding:8px;
+border-radius:6px;
+width:70%;
+margin:12px auto;
+font-weight:bold;
+}
+
+.frame{
+margin-top:25px;
+padding:25px;
+border:12px solid transparent;
+border-image:repeating-linear-gradient(45deg,#d62828 0px,#d62828 6px,black 6px,black 12px) 12;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:18px 30px;
+}
+
+.section-title{
+font-family:'Oswald';
+font-size:26px;
+color:#ff3b3b;
+margin-bottom:12px;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:10px;
+font-size:18px;
+font-weight:bold;
+}
+
+.price{
+color:#ffd166;
+}
+
+.double{
+font-size:13px;
+color:#ffd166;
+margin-bottom:8px;
+}
+
+.desc{
+font-size:13px;
+color:#ccc;
+margin-bottom:10px;
+}
+
+.best{
+color:#ffd166;
+}
+
+.highlight{
+background:#d62828;
+padding:2px 6px;
+border-radius:4px;
+margin-left:6px;
+font-size:11px;
+}
+
+.toppings{
+margin-top:30px;
+border-top:3px solid #d62828;
+border-bottom:3px solid #d62828;
+padding:25px 10px;
+text-align:center;
+font-size:18px;
+line-height:1.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="menu">
+
+<div class="title">👑 KING ANGUS</div>
+<div class="subtitle">SMASH BURGERS</div>
+
+<div class="brandline">Av. Nossa Senhora da Aparecida, 322</div>
+<div class="brandline">Terça a Domingo • 18h às 23h</div>
+<div class="brandline">📲 (41) 99570-7747</div>
+<div class="brandline">Instagram: @kingangus</div>
+
+<div class="slogan">🔥 BURGERS ANGUS FEITOS NA CHAPA QUENTE 🔥</div>
+
+<div class="frame">
+
+<div class="grid">
+
+<div>
+
+<div class="section-title">🍔 BURGERS 140g</div>
+
+<div class="item">
+<span>👑 KING ANGUS</span>
+<span class="price">R$ 34,99</span>
+</div>
+<div class="double">Duplo burguer: R$ 39,99</div>
+<div class="desc">
+Pão brioche • Hambúrguer Angus de picanha • Queijo prato ou cheddar • Picles • Bacon crocante • Cebola caramelizada • Molho da casa
+</div>
+
+<div class="item best">
+<span>🔥 ANGUS SUPREMO <span class="highlight">MAIS PEDIDO</span></span>
+<span class="price">R$ 23,90</span>
+</div>
+<div class="double">Duplo burguer: R$ 32,99</div>
+<div class="desc">
+Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar • Cebola roxa • Tomate • Alface • Molho King
+</div>
+
+<div class="item">
+<span>🥓 ANGUS BACON</span>
+<span class="price">R$ 26,99</span>
+</div>
+<div class="double">Duplo burguer: R$ 29,99</div>
+<div class="desc">
+Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar • Bacon crocante • Picles • Molho King
+</div>
+
+<div class="item">
+<span>🧀 CLASSIC CHEESE ⭐</span>
+<span class="price">R$ 18,99</span>
+</div>
+<div class="double">Duplo burguer: R$ 24,99</div>
+<div class="desc">
+Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar
+</div>
+
+</div>
+
+<div>
+
+<div class="section-title">🍔 COMBO DO REI 👑</div>
+
+<div class="item">
+    <span>Combo Angus Supremo</span>
+    <span class="price">R$ 36,99</span>
+</div>
+<div class="desc">Burger + batata frita + refrigerante</div>
+
+<div class="item">
+    <span>Combo Angus Bacon</span>
+    <span class="price">R$ 39,99</span>
+</div>
+<div class="desc">Burger + batata frita + refrigerante</div>
+
+<div class="item">
+    <span>🥉 Combo Monstro 🔥</span>
+    <span class="price">R$ 44,99</span>
+</div>
+<div class="desc">
+Burger duplo + cheddar extra + bacon<br>
+Batata + refrigerante
+</div>
+
+</div>
+
+<div>
+
+<div class="section-title">🥖 BAGUETES</div>
+
+<div class="item">
+<span>Baguete Suíno</span>
+<span class="price">R$ 19,99</span>
+</div>
+
+<div class="item best">
+<span>👑 Baguete Mista <span class="highlight">MAIS PEDIDA</span></span>
+<span class="price">R$ 23,99</span>
+</div>
+
+<div class="item">
+<span>Baguete Bovino</span>
+<span class="price">R$ 28,99</span>
+</div>
+
+</div>
+
+<div>
+
+<div class="section-title">🍟 ACOMPANHAMENTOS</div>
+
+<div class="item">
+<span>Batata Frita Clássica</span>
+<span class="price">R$ 9,99</span>
+</div>
+<div class="desc">Batata crocante e dourada.</div>
+
+<div class="item">
+<span>Batata Cheddar & Bacon</span>
+<span class="price">R$ 14,99</span>
+</div>
+<div class="desc">Batata frita com cheddar cremoso e bacon crocante.</div>
+
+</div>
+
+<div>
+
+<div class="section-title">🥤 BEBIDAS</div>
+
+<div class="item">
+<span>Refrigerante lata</span>
+<span class="price">R$ 4,99</span>
+</div>
+
+<div class="item">
+<span>Água / Água com gás</span>
+<span class="price">R$ 3,99</span>
+</div>
+
+<div class="item">
+<span>🍺 Chopp 500ml</span>
+<span class="price">R$ 14,99</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="toppings">
+🍔 <b>Todos os burgers são preparados na hora na chapa quente.</b><br>
+Ingredientes frescos • Carne Angus selecionada • Pão brioche macio
+</div>
+
+</div>
+
+</body>
+</html>
