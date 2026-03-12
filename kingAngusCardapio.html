@@ -2,285 +2,1078 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>King Angus Burgers</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>King Angus — Cardápio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-
-@page{size:A4;margin:0}
-
-body{
-margin:0;
-background:#000;
-font-family:'Roboto Condensed',sans-serif;
-color:#fff;
+:root{
+  --red:#d62828;--red2:#ff3b3b;--gold:#ffd166;
+  --bg:#0a0a0a;--dark:#111;--card:#1a1a1a;--border:#2a2a2a;
+  --text:#f0f0f0;--muted:#777;--green:#25d366;
 }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-.menu{
-width:210mm;
-height:297mm;
-margin:auto;
-padding:15mm 12mm;
-box-sizing:border-box;
+/* ── HERO ── */
+.hero{padding:44px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(214,40,40,.22) 0%,transparent 70%);pointer-events:none;}
+.crown{font-size:40px;display:block;margin-bottom:2px;animation:float 3.5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hero h1{font-family:'Bebas Neue';font-size:clamp(54px,17vw,88px);letter-spacing:3px;line-height:.9;background:linear-gradient(170deg,#fff 40%,#d62828 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'Bebas Neue';font-size:clamp(18px,5.5vw,28px);color:var(--red);letter-spacing:7px;margin-top:4px;}
+.divider{width:70px;height:3px;background:var(--red);margin:14px auto;border-radius:2px;}
+.hero-info{font-size:13.5px;color:var(--muted);line-height:2;letter-spacing:.3px;}
+.hero-info strong{color:var(--text);}
+.badge-fire{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:12.5px;letter-spacing:1.5px;padding:8px 18px;border-radius:4px;margin-top:16px;text-transform:uppercase;}
+
+/* ── STICKY NAV ── */
+.sticky-nav{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;}
+.sticky-nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex-shrink:0;background:transparent;border:1.5px solid var(--border);color:var(--text);font-family:'Barlow Condensed';font-size:16px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:10px 20px;border-radius:24px;cursor:pointer;transition:all .15s;}
+.nav-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+.nav-btn:active{transform:scale(.95);}
+
+/* ── BODY ── */
+.menu-body{padding:0 20px 140px;max-width:100%;}
+
+/* ── SECTION ── */
+.section{margin-top:28px;animation:fadeUp .45s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.section:nth-child(1){animation-delay:.05s}.section:nth-child(2){animation-delay:.1s}.section:nth-child(3){animation-delay:.15s}.section:nth-child(4){animation-delay:.2s}.section:nth-child(5){animation-delay:.25s}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.section-icon{font-size:22px;}
+.section-title{font-family:'Bebas Neue';font-size:26px;letter-spacing:2px;color:var(--red);}
+
+/* ── ITEM CARD ── */
+.item-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:10px;transition:border-color .2s;position:relative;}
+.item-card:active{border-color:var(--red);}
+.item-top{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.item-name{font-size:18px;font-weight:700;letter-spacing:.2px;line-height:1.3;flex:1;}
+.item-price-wrap{text-align:right;flex-shrink:0;}
+.item-price{font-family:'Bebas Neue';font-size:22px;color:var(--gold);letter-spacing:.5px;}
+.item-price-double{font-size:12px;color:var(--gold);opacity:.6;font-weight:600;margin-top:1px;}
+.item-desc{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6;border-top:1px solid var(--border);padding-top:8px;}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 8px;border-radius:4px;text-transform:uppercase;margin-left:6px;vertical-align:middle;}
+.tag-hot{background:var(--red);color:#fff;}
+.tag-star{background:var(--gold);color:#000;}
+.simple .item-price{font-size:20px;}
+
+.add-btn{
+  margin-top:12px;width:100%;background:var(--red);border:none;
+  color:#fff;font-family:'Bebas Neue';font-size:17px;letter-spacing:2px;
+  padding:11px;border-radius:8px;cursor:pointer;transition:all .18s;
 }
+.add-btn:active,.add-btn:hover{background:var(--red2);}
 
-.title{
-font-family:'Oswald';
-font-size:70px;
-text-align:center;
-letter-spacing:4px;
+/* ── PERSONALIZAÇÃO MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{
+  background:#161618;border-top:2px solid var(--border);
+  border-radius:20px 20px 0 0;width:100%;max-width:520px;
+  max-height:92vh;overflow-y:auto;padding:22px 20px 36px;
+  animation:slideUp .3s cubic-bezier(.22,1,.36,1);
 }
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+.sheet h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;margin-bottom:4px;}
+.sheet-price{font-family:'Bebas Neue';font-size:22px;color:var(--gold);margin-bottom:16px;}
+.sheet-desc{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
 
-.subtitle{
-text-align:center;
-color:#d62828;
-font-size:30px;
-margin-top:-10px;
+.opt-section{margin-bottom:18px;}
+.opt-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;}
+.opt-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.opt-chip{
+  background:var(--card);border:1.5px solid var(--border);color:var(--text);
+  font-family:'Barlow Condensed';font-size:13px;font-weight:600;
+  padding:7px 14px;border-radius:8px;cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;gap:5px;
 }
+.opt-chip.selected{background:rgba(214,40,40,.18);border-color:var(--red);color:var(--red2);}
+.opt-chip .extra-price{font-size:11px;color:var(--gold);margin-left:3px;}
+.opt-chip.remove-chip.selected{background:rgba(255,100,100,.12);border-color:#e06060;color:#ff9090;}
 
-.brandline{
-text-align:center;
-font-size:18px;
-margin:6px 0;
+.remove-list{display:flex;flex-wrap:wrap;gap:8px;}
+
+.qty-row{display:flex;align-items:center;gap:16px;margin:16px 0;}
+.qty-btn{background:var(--border);border:none;color:var(--text);width:34px;height:34px;border-radius:8px;font-size:20px;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;}
+.qty-btn:active{background:var(--red);}
+.qty-num{font-family:'Bebas Neue';font-size:26px;min-width:28px;text-align:center;}
+
+.add-to-cart-btn{
+  width:100%;background:var(--red);border:none;color:#fff;
+  font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;
+  padding:15px;border-radius:10px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
+.add-to-cart-btn:active{background:var(--red2);transform:scale(.98);}
 
-.slogan{
-background:#d62828;
-text-align:center;
-padding:8px;
-border-radius:6px;
-width:70%;
-margin:12px auto;
-font-weight:bold;
+/* ── CART FLOATING ── */
+.cart-float{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--red);color:#fff;border:none;
+  font-family:'Bebas Neue';font-size:18px;letter-spacing:1.5px;
+  padding:14px 24px;border-radius:50px;cursor:pointer;
+  box-shadow:0 6px 28px rgba(214,40,40,.5);
+  display:none;align-items:center;gap:12px;
+  min-width:260px;justify-content:space-between;
+  z-index:100;transition:all .2s;
 }
+.cart-float.visible{display:flex;}
+.cart-float:active{transform:translateX(-50%) scale(.97);}
+.cart-badge{background:rgba(255,255,255,.25);border-radius:20px;padding:2px 10px;font-size:14px;}
+.cart-total-label{font-size:16px;}
 
-.frame{
-margin-top:25px;
-padding:25px;
-border:12px solid transparent;
-border-image:repeating-linear-gradient(45deg,#d62828 0px,#d62828 6px,black 6px,black 12px) 12;
+/* ── CART SHEET ── */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:flex-end;justify-content:center;}
+.cart-overlay.open{display:flex;}
+.cart-sheet{
+  background:#161618;border-top:2px solid var(--border);
+  border-radius:20px 20px 0 0;width:100%;max-width:520px;
+  max-height:92vh;overflow-y:auto;padding:22px 20px 36px;
+  animation:slideUp .3s cubic-bezier(.22,1,.36,1);
 }
+.cart-sheet h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;margin-bottom:16px;}
+.cart-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.ci-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+.ci-name{font-size:15px;font-weight:700;flex:1;}
+.ci-price{font-family:'Bebas Neue';font-size:18px;color:var(--gold);}
+.ci-details{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5;}
+.ci-row{display:flex;align-items:center;justify-content:space-between;}
+.ci-qty-wrap{display:flex;align-items:center;gap:10px;}
+.ci-qty-btn{background:var(--border);border:none;color:var(--text);width:28px;height:28px;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ci-qty-btn:active{background:var(--red);}
+.ci-qty{font-family:'Bebas Neue';font-size:20px;min-width:22px;text-align:center;}
+.ci-remove{background:transparent;border:1px solid #333;color:var(--muted);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;}
+.ci-remove:active{border-color:var(--red);color:var(--red2);}
 
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:18px 30px;
+.cart-totals{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:6px;}
+.ct-row{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;}
+.ct-row.total-row{border-top:1px solid var(--border);margin-top:8px;padding-top:10px;}
+.ct-row.total-row .ct-label{font-family:'Bebas Neue';font-size:20px;}
+.ct-row.total-row .ct-val{font-family:'Bebas Neue';font-size:24px;color:var(--gold);}
+.ct-label{color:var(--muted);}
+.ct-val{color:var(--text);}
+.ct-val.green{color:#6dc96d;}
+
+.checkout-btn{
+  width:100%;background:var(--red);border:none;color:#fff;
+  font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;
+  padding:15px;border-radius:10px;cursor:pointer;margin-top:14px;
+  transition:all .2s;
 }
+.checkout-btn:active{background:var(--red2);}
 
-.section-title{
-font-family:'Oswald';
-font-size:26px;
-color:#ff3b3b;
-margin-bottom:12px;
+/* ── CHECKOUT FORM ── */
+.checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:400;align-items:flex-end;justify-content:center;}
+.checkout-overlay.open{display:flex;}
+.checkout-sheet{
+  background:#161618;border-top:2px solid var(--border);
+  border-radius:20px 20px 0 0;width:100%;max-width:520px;
+  max-height:96vh;overflow-y:auto;padding:22px 20px 40px;
+  animation:slideUp .3s cubic-bezier(.22,1,.36,1);
 }
-
-.item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:10px;
-font-size:18px;
-font-weight:bold;
+.checkout-sheet h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;}
+.form-group input,.form-group textarea{
+  width:100%;background:var(--card);border:1.5px solid var(--border);
+  color:var(--text);font-family:'Barlow Condensed';font-size:16px;
+  border-radius:8px;padding:11px 14px;outline:none;transition:border-color .15s;
 }
+.form-group input:focus,.form-group textarea:focus{border-color:var(--red);}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted);}
+.form-group textarea{resize:none;}
 
-.price{
-color:#ffd166;
+.pix-box{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px;}
+.pix-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.pix-qr-wrap{display:flex;justify-content:center;margin-bottom:14px;}
+.pix-qr-wrap canvas,.pix-qr-wrap img{border-radius:10px;border:3px solid var(--gold);background:#fff;padding:6px;}
+.pix-key-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;}
+.pix-key-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.pix-key{flex:1;background:#0f0f0f;border:1px solid var(--border);border-radius:8px;padding:11px 12px;font-size:13px;font-weight:600;color:var(--text);word-break:break-all;font-family:monospace;line-height:1.4;}
+.pix-copy-btn{background:var(--gold);border:none;color:#000;font-family:'Bebas Neue';font-size:15px;letter-spacing:.5px;padding:11px 16px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.pix-copy-btn:active{opacity:.8;}
+.pix-copy-btn.copied{background:#6dc96d;color:#fff;}
+.pix-notice{font-size:12.5px;color:var(--muted);line-height:1.6;background:rgba(214,40,40,.08);border:1px solid rgba(214,40,40,.2);border-radius:8px;padding:10px 12px;}
+.pix-notice strong{color:var(--red2);}
+
+.finalize-btn{
+  width:100%;background:var(--green);border:none;color:#fff;
+  font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;
+  padding:16px;border-radius:10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 4px 20px rgba(37,211,102,.35);transition:all .2s;
 }
+.finalize-btn:active{opacity:.9;transform:scale(.98);}
 
-.double{
-font-size:13px;
-color:#ffd166;
-margin-bottom:8px;
+.close-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed';font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:10px;width:100%;border-radius:8px;cursor:pointer;margin-bottom:10px;}
+.close-btn:active{border-color:var(--muted);}
+
+.err{font-size:12px;color:var(--red2);margin-top:4px;}
+
+/* ── ORDER TYPE SELECTOR ── */
+.order-type-wrap{margin-bottom:14px;}
+.order-type-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;}
+.order-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ot-btn{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:10px;padding:12px 6px;cursor:pointer;
+  text-align:center;transition:all .18s;
 }
+.ot-btn.active{background:rgba(214,40,40,.15);border-color:var(--red);}
+.ot-btn .ot-icon{font-size:24px;display:block;margin-bottom:4px;}
+.ot-btn .ot-name{font-family:'Bebas Neue';font-size:15px;letter-spacing:1px;color:var(--text);}
+.ot-btn .ot-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ot-btn.active .ot-name{color:var(--red2);}
+.ot-btn.active .ot-sub{color:var(--red2);opacity:.7;}
 
-.desc{
-font-size:13px;
-color:#ccc;
-margin-bottom:10px;
-}
+/* ── TOAST ── */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);color:var(--text);font-size:14px;font-weight:600;padding:11px 20px;border-radius:30px;z-index:9999;display:none;white-space:nowrap;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-.best{
-color:#ffd166;
-}
-
-.highlight{
-background:#d62828;
-padding:2px 6px;
-border-radius:4px;
-margin-left:6px;
-font-size:11px;
-}
-
-.toppings{
-margin-top:30px;
-border-top:3px solid #d62828;
-border-bottom:3px solid #d62828;
-padding:25px 10px;
-text-align:center;
-font-size:18px;
-line-height:1.6;
-}
-
+/* ── FOOTER ── */
+.footer{background:var(--card);border-top:2px solid var(--red);margin-top:28px;padding:20px;text-align:center;border-radius:10px;}
+.footer p{font-size:13.5px;color:var(--muted);line-height:2;}
+.footer strong{color:var(--text);}
+.footer-stamp{font-family:'Bebas Neue';font-size:13px;letter-spacing:3px;color:var(--red);margin-top:12px;display:block;}
 </style>
 </head>
-
 <body>
 
-<div class="menu">
-
-<div class="title">👑 KING ANGUS</div>
-<div class="subtitle">SMASH BURGERS</div>
-
-<div class="brandline">Av. Nossa Senhora da Aparecida, 322</div>
-<div class="brandline">Terça a Domingo • 18h às 23h</div>
-<div class="brandline">📲 (41) 99570-7747</div>
-<div class="brandline">Instagram: @kingangus</div>
-
-<div class="slogan">🔥 BURGERS ANGUS FEITOS NA CHAPA QUENTE 🔥</div>
-
-<div class="frame">
-
-<div class="grid">
-
-<div>
-
-<div class="section-title">🍔 BURGERS 140g</div>
-
-<div class="item">
-<span>👑 KING ANGUS</span>
-<span class="price">R$ 34,99</span>
-</div>
-<div class="double">Duplo burguer: R$ 39,99</div>
-<div class="desc">
-Pão brioche • Hambúrguer Angus de picanha • Queijo prato ou cheddar • Picles • Bacon crocante • Cebola caramelizada • Molho da casa
+<!-- HERO -->
+<div class="hero">
+  <span class="crown">👑</span>
+  <h1>KING ANGUS</h1>
+  <div class="hero-sub">Smash Burgers</div>
+  <div class="divider"></div>
+  <div class="hero-info">
+    <strong>Av. Nossa Senhora da Aparecida, 322</strong><br>
+    Terça a Domingo · 18h às 23h<br>
+    📲 (41) 99570-7747
+  </div>
+  <div class="badge-fire">🔥 Feitos na chapa quente na hora 🔥</div>
 </div>
 
-<div class="item best">
-<span>🔥 ANGUS SUPREMO <span class="highlight">MAIS PEDIDO</span></span>
-<span class="price">R$ 23,90</span>
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="navScroll('#sec-burgers',this)">🍔 Burgers</button>
+  <button class="nav-btn" onclick="navScroll('#sec-combos',this)">👑 Combos</button>
+  <button class="nav-btn" onclick="navScroll('#sec-baguetes',this)">🥖 Baguetes</button>
+  <button class="nav-btn" onclick="navScroll('#sec-acomp',this)">🍟 Acomp.</button>
+  <button class="nav-btn" onclick="navScroll('#sec-bebidas',this)">🥤 Bebidas</button>
+</nav>
+
+<!-- MENU BODY -->
+<div class="menu-body">
+
+  <!-- BURGERS -->
+  <div class="section" id="sec-burgers">
+    <div class="section-header"><span class="section-icon">🍔</span><span class="section-title">Burgers 140g</span></div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">👑 King Angus</div>
+        <div class="item-price-wrap"><div class="item-price">R$ 34,99</div><div class="item-price-double">Duplo: R$ 39,99</div></div>
+      </div>
+      <div class="item-desc">Pão brioche · Hambúrguer Angus de picanha · Queijo prato ou cheddar · Picles · Bacon crocante · Cebola caramelizada · Molho da casa</div>
+      <button class="add-btn" onclick="openCustomize('king-angus')">+ Adicionar</button>
+    </div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">🔥 Angus Supremo <span class="tag tag-hot">Mais pedido</span></div>
+        <div class="item-price-wrap"><div class="item-price">R$ 23,90</div><div class="item-price-double">Duplo: R$ 32,99</div></div>
+      </div>
+      <div class="item-desc">Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar · Cebola roxa · Tomate · Alface · Molho King</div>
+      <button class="add-btn" onclick="openCustomize('angus-supremo')">+ Adicionar</button>
+    </div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">🥓 Angus Bacon</div>
+        <div class="item-price-wrap"><div class="item-price">R$ 26,99</div><div class="item-price-double">Duplo: R$ 29,99</div></div>
+      </div>
+      <div class="item-desc">Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar · Bacon crocante · Picles · Molho King</div>
+      <button class="add-btn" onclick="openCustomize('angus-bacon')">+ Adicionar</button>
+    </div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">🧀 Classic Cheese <span class="tag tag-star">⭐</span></div>
+        <div class="item-price-wrap"><div class="item-price">R$ 18,99</div><div class="item-price-double">Duplo: R$ 24,99</div></div>
+      </div>
+      <div class="item-desc">Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar</div>
+      <button class="add-btn" onclick="openCustomize('classic-cheese')">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- COMBOS -->
+  <div class="section" id="sec-combos">
+    <div class="section-header"><span class="section-icon">👑</span><span class="section-title">Combo do Rei</span></div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">Combo Angus Supremo</div>
+        <div class="item-price-wrap"><div class="item-price">R$ 36,99</div></div>
+      </div>
+      <div class="item-desc">Burger + batata frita + refrigerante</div>
+      <button class="add-btn" onclick="addSimple('Combo Angus Supremo',36.99)">+ Adicionar</button>
+    </div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">Combo Angus Bacon</div>
+        <div class="item-price-wrap"><div class="item-price">R$ 39,99</div></div>
+      </div>
+      <div class="item-desc">Burger + batata frita + refrigerante</div>
+      <button class="add-btn" onclick="addSimple('Combo Angus Bacon',39.99)">+ Adicionar</button>
+    </div>
+
+    <div class="item-card">
+      <div class="item-top">
+        <div class="item-name">🔥 Combo Monstro</div>
+        <div class="item-price-wrap"><div class="item-price">R$ 44,99</div></div>
+      </div>
+      <div class="item-desc">Burger duplo + cheddar extra + bacon · Batata + refrigerante</div>
+      <button class="add-btn" onclick="addSimple('Combo Monstro',44.99)">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- BAGUETES -->
+  <div class="section" id="sec-baguetes">
+    <div class="section-header"><span class="section-icon">🥖</span><span class="section-title">Baguetes</span></div>
+    <div class="item-card simple">
+      <div class="item-top"><div class="item-name">Baguete Suíno</div><div class="item-price-wrap"><div class="item-price">R$ 19,99</div></div></div>
+      <button class="add-btn" onclick="addSimple('Baguete Suíno',19.99)">+ Adicionar</button>
+    </div>
+    <div class="item-card simple">
+      <div class="item-top"><div class="item-name">👑 Baguete Mista <span class="tag tag-hot">Mais pedida</span></div><div class="item-price-wrap"><div class="item-price">R$ 23,99</div></div></div>
+      <button class="add-btn" onclick="addSimple('Baguete Mista',23.99)">+ Adicionar</button>
+    </div>
+    <div class="item-card simple">
+      <div class="item-top"><div class="item-name">Baguete Bovino</div><div class="item-price-wrap"><div class="item-price">R$ 28,99</div></div></div>
+      <button class="add-btn" onclick="addSimple('Baguete Bovino',28.99)">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- ACOMP -->
+  <div class="section" id="sec-acomp">
+    <div class="section-header"><span class="section-icon">🍟</span><span class="section-title">Acompanhamentos</span></div>
+    <div class="item-card">
+      <div class="item-top"><div class="item-name">Batata Frita Clássica</div><div class="item-price-wrap"><div class="item-price">R$ 9,99</div></div></div>
+      <div class="item-desc">Batata crocante e dourada</div>
+      <button class="add-btn" onclick="addSimple('Batata Frita Clássica',9.99)">+ Adicionar</button>
+    </div>
+    <div class="item-card">
+      <div class="item-top"><div class="item-name">Batata Cheddar & Bacon</div><div class="item-price-wrap"><div class="item-price">R$ 14,99</div></div></div>
+      <div class="item-desc">Batata frita com cheddar cremoso e bacon crocante</div>
+      <button class="add-btn" onclick="addSimple('Batata Cheddar & Bacon',14.99)">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- BEBIDAS -->
+  <div class="section" id="sec-bebidas">
+    <div class="section-header"><span class="section-icon">🥤</span><span class="section-title">Bebidas</span></div>
+    <div class="item-card">
+      <div class="item-top"><div class="item-name">🥤 Refrigerante lata</div><div class="item-price-wrap"><div class="item-price">R$ 4,99</div></div></div>
+      <div class="item-desc">Coca-Cola · Guaraná Antarctica · Fanta Laranja · Fanta Uva · Sprite · Schweppes</div>
+      <button class="add-btn" onclick="openRefrigerante()">+ Adicionar</button>
+    </div>
+    <div class="item-card simple">
+      <div class="item-top"><div class="item-name">Água / Água com gás</div><div class="item-price-wrap"><div class="item-price">R$ 3,99</div></div></div>
+      <button class="add-btn" onclick="addSimple('Água',3.99)">+ Adicionar</button>
+    </div>
+    <div class="item-card simple">
+      <div class="item-top"><div class="item-name">🍺 Chopp 500ml</div><div class="item-price-wrap"><div class="item-price">R$ 14,99</div></div></div>
+      <button class="add-btn" onclick="addSimple('Chopp 500ml',14.99)">+ Adicionar</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>🍔 <strong>Todos os burgers são preparados na hora</strong><br>Ingredientes frescos · Carne Angus selecionada · Pão brioche macio</p>
+    <span class="footer-stamp">👑 King Angus Burgers · @kingangusburger</span>
+  </div>
 </div>
-<div class="double">Duplo burguer: R$ 32,99</div>
-<div class="desc">
-Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar • Cebola roxa • Tomate • Alface • Molho King
+
+<!-- REFRIGERANTE OVERLAY -->
+<div class="overlay" id="refri-overlay" onclick="outsideClose(event,'refri-overlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>🥤 Refrigerante Lata</h2>
+    <div class="sheet-price">R$ 4,99</div>
+    <div class="opt-section">
+      <div class="opt-label">Escolha o sabor</div>
+      <div class="opt-grid" id="refri-flavors"></div>
+    </div>
+    <div class="qty-row">
+      <div class="opt-label" style="margin:0">Qtd:</div>
+      <button class="qty-btn" onclick="changeRefriQty(-1)">−</button>
+      <span class="qty-num" id="refri-qty">1</span>
+      <button class="qty-btn" onclick="changeRefriQty(1)">+</button>
+    </div>
+    <button class="add-to-cart-btn" id="refri-add-btn" onclick="confirmRefri()" disabled style="opacity:.4">
+      <span>SELECIONE UM SABOR</span>
+    </button>
+  </div>
 </div>
 
-<div class="item">
-<span>🥓 ANGUS BACON</span>
-<span class="price">R$ 26,99</span>
-</div>
-<div class="double">Duplo burguer: R$ 29,99</div>
-<div class="desc">
-Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar • Bacon crocante • Picles • Molho King
-</div>
+<!-- CART FLOAT -->
+<button class="cart-float" id="cart-float" onclick="openCart()">
+  <span>🛒 VER CARRINHO</span>
+  <span class="cart-badge" id="cart-badge">0</span>
+  <span class="cart-total-label" id="cart-total-label">R$ 0,00</span>
+</button>
 
-<div class="item">
-<span>🧀 CLASSIC CHEESE ⭐</span>
-<span class="price">R$ 18,99</span>
-</div>
-<div class="double">Duplo burguer: R$ 24,99</div>
-<div class="desc">
-Pão brioche • Hambúrguer Angus • Queijo prato ou cheddar
-</div>
+<!-- PERSONALIZATION OVERLAY -->
+<div class="overlay" id="customize-overlay" onclick="outsideClose(event,'customize-overlay')">
+  <div class="sheet" id="customize-sheet">
+    <div class="sheet-handle"></div>
+    <h2 id="cs-title"></h2>
+    <div class="sheet-price" id="cs-price"></div>
+    <div class="sheet-desc" id="cs-desc"></div>
 
-</div>
+    <!-- Ponto da carne -->
+    <div class="opt-section">
+      <div class="opt-label">🥩 Ponto da Carne</div>
+      <div class="opt-grid" id="opt-ponto"></div>
+    </div>
 
-<div>
+    <!-- Queijo -->
+    <div class="opt-section">
+      <div class="opt-label">🧀 Tipo de Queijo</div>
+      <div class="opt-grid" id="opt-queijo"></div>
+    </div>
 
-<div class="section-title">🍔 COMBO DO REI 👑</div>
+    <!-- Duplo -->
+    <div class="opt-section" id="opt-duplo-sec">
+      <div class="opt-label">🔥 Tornar Duplo?</div>
+      <div class="opt-grid" id="opt-duplo"></div>
+    </div>
 
-<div class="item">
-    <span>Combo Angus Supremo</span>
-    <span class="price">R$ 36,99</span>
-</div>
-<div class="desc">Burger + batata frita + refrigerante</div>
+    <!-- Extras -->
+    <div class="opt-section">
+      <div class="opt-label">➕ Extras (pagos)</div>
+      <div class="opt-grid" id="opt-extras"></div>
+    </div>
 
-<div class="item">
-    <span>Combo Angus Bacon</span>
-    <span class="price">R$ 39,99</span>
-</div>
-<div class="desc">Burger + batata frita + refrigerante</div>
+    <!-- Remover -->
+    <div class="opt-section" id="opt-remove-sec">
+      <div class="opt-label">🚫 Remover Ingredientes</div>
+      <div class="remove-list" id="opt-remove"></div>
+    </div>
 
-<div class="item">
-    <span>🥉 Combo Monstro 🔥</span>
-    <span class="price">R$ 44,99</span>
-</div>
-<div class="desc">
-Burger duplo + cheddar extra + bacon<br>
-Batata + refrigerante
-</div>
+    <div class="qty-row">
+      <div class="opt-label" style="margin:0">Qtd:</div>
+      <button class="qty-btn" onclick="changeSheetQty(-1)">−</button>
+      <span class="qty-num" id="sheet-qty">1</span>
+      <button class="qty-btn" onclick="changeSheetQty(1)">+</button>
+    </div>
 
-</div>
-
-<div>
-
-<div class="section-title">🥖 BAGUETES</div>
-
-<div class="item">
-<span>Baguete Suíno</span>
-<span class="price">R$ 19,99</span>
-</div>
-
-<div class="item best">
-<span>👑 Baguete Mista <span class="highlight">MAIS PEDIDA</span></span>
-<span class="price">R$ 23,99</span>
+    <button class="add-to-cart-btn" id="add-to-cart-btn" onclick="confirmAddToCart()">
+      <span>ADICIONAR AO CARRINHO</span>
+      <span id="add-btn-price"></span>
+    </button>
+  </div>
 </div>
 
-<div class="item">
-<span>Baguete Bovino</span>
-<span class="price">R$ 28,99</span>
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="outsideClose(event,'cart-overlay')">
+  <div class="cart-sheet">
+    <div class="sheet-handle"></div>
+    <h2>🛒 MEU PEDIDO</h2>
+
+    <!-- TIPO DE PEDIDO -->
+    <div class="order-type-wrap">
+      <div class="order-type-label">📦 Como vai receber?</div>
+      <div class="order-type-grid">
+        <div class="ot-btn active" id="ot-delivery" onclick="selectOrderType('delivery')">
+          <span class="ot-icon">🛵</span>
+          <div class="ot-name">Delivery</div>
+          <div class="ot-sub">Taxa R$ 5,00</div>
+        </div>
+        <div class="ot-btn" id="ot-retirada" onclick="selectOrderType('retirada')">
+          <span class="ot-icon">🏃</span>
+          <div class="ot-name">Retirada</div>
+          <div class="ot-sub">Sem taxa</div>
+        </div>
+        <div class="ot-btn" id="ot-balcao" onclick="selectOrderType('balcao')">
+          <span class="ot-icon">🪑</span>
+          <div class="ot-name">Balcão</div>
+          <div class="ot-sub">Sem taxa</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cart-items-list"></div>
+    <div class="cart-totals" id="cart-totals"></div>
+    <button class="checkout-btn" onclick="openCheckout()">FINALIZAR PEDIDO →</button>
+    <button class="close-btn" style="margin-top:10px;" onclick="closeCart()">Continuar comprando</button>
+  </div>
 </div>
 
+<!-- CHECKOUT OVERLAY -->
+<div class="checkout-overlay" id="checkout-overlay" onclick="outsideClose(event,'checkout-overlay')">
+  <div class="checkout-sheet">
+    <div class="sheet-handle"></div>
+    <h2>📋 SEUS DADOS</h2>
+
+    <!-- TELEFONE PRIMEIRO com lookup -->
+    <div class="form-group">
+      <label>Telefone *</label>
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        <div style="flex:1">
+          <input id="f-tel" type="tel" placeholder="(41) 99999-9999" oninput="lookupCliente(this.value)">
+          <div class="err" id="err-tel"></div>
+        </div>
+      </div>
+      <!-- banner cliente encontrado -->
+      <div id="cliente-found" style="display:none;margin-top:8px;background:rgba(100,200,100,.12);border:1px solid rgba(100,200,100,.3);border-radius:8px;padding:10px 12px;font-size:13px;color:#6dc96d;display:none;align-items:center;gap:8px;">
+        <span style="font-size:18px;">👋</span>
+        <span id="cliente-found-txt"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nome completo *</label>
+      <input id="f-nome" type="text" placeholder="Seu nome">
+      <div class="err" id="err-nome"></div>
+    </div>
+
+    <div id="delivery-fields">
+      <div class="form-group">
+        <label>Endereço completo *</label>
+        <input id="f-end" type="text" placeholder="Rua, número, bairro, cidade">
+        <div class="err" id="err-end"></div>
+      </div>
+      <div class="form-group">
+        <label>Ponto de referência *</label>
+        <input id="f-ref" type="text" placeholder="Ex: próximo ao mercado X">
+        <div class="err" id="err-ref"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Observações gerais</label>
+      <textarea id="f-obs" rows="2" placeholder="Alguma observação geral do pedido?"></textarea>
+    </div>
+
+    <!-- PIX BOX -->
+    <div class="pix-box">
+      <div class="pix-title">💳 Pagamento via PIX</div>
+      <div class="pix-qr-wrap">
+        <canvas id="pix-qr-canvas" width="180" height="180"></canvas>
+      </div>
+      <div class="pix-key-label">Chave PIX (copie e cole)</div>
+      <div class="pix-key-row">
+        <div class="pix-key" id="pix-key-display"></div>
+        <button class="pix-copy-btn" id="pix-copy-btn" onclick="copyPix()">📋 Copiar</button>
+      </div>
+      <div class="pix-notice">
+        ⚠️ <strong>Atenção:</strong> Após enviar o pedido, pague via PIX e <strong>envie o comprovante pelo WhatsApp.</strong><br>
+        O pedido só será preparado após a <strong>confirmação do pagamento.</strong>
+      </div>
+    </div>
+
+    <div class="cart-totals" id="checkout-totals"></div>
+
+    <button class="finalize-btn" onclick="finalizeOrder()">
+      <span>💬</span> ENVIAR PEDIDO NO WHATSAPP
+    </button>
+    <button class="close-btn" style="margin-top:10px;" onclick="document.getElementById('checkout-overlay').classList.remove('open')">Voltar</button>
+  </div>
 </div>
 
-<div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-<div class="section-title">🍟 ACOMPANHAMENTOS</div>
+<script>
+// ═══ CONFIG ═══════════════════════════════════════════
+const WA_NUMBER = '5541995707747'; // sem +
+const PIX_KEY   = '4073f74a-db6f-4b7d-acea-6c39f270478f';
+const DELIVERY_FEE = 5.00;
 
-<div class="item">
-<span>Batata Frita Clássica</span>
-<span class="price">R$ 9,99</span>
-</div>
-<div class="desc">Batata crocante e dourada.</div>
+// ═══ MENU DATA ════════════════════════════════════════
+const BURGERS = {
+  'king-angus':{
+    name:'👑 King Angus',price:34.99,doublePrice:39.99,
+    desc:'Pão brioche · Hambúrguer Angus de picanha · Queijo prato ou cheddar · Picles · Bacon crocante · Cebola caramelizada · Molho da casa',
+    removable:['Picles','Bacon','Cebola caramelizada','Molho da casa','Queijo']
+  },
+  'angus-supremo':{
+    name:'🔥 Angus Supremo',price:23.90,doublePrice:32.99,
+    desc:'Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar · Cebola roxa · Tomate · Alface · Molho King',
+    removable:['Cebola roxa','Tomate','Alface','Molho King','Queijo']
+  },
+  'angus-bacon':{
+    name:'🥓 Angus Bacon',price:26.99,doublePrice:29.99,
+    desc:'Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar · Bacon crocante · Picles · Molho King',
+    removable:['Bacon','Picles','Molho King','Queijo']
+  },
+  'classic-cheese':{
+    name:'🧀 Classic Cheese',price:18.99,doublePrice:24.99,
+    desc:'Pão brioche · Hambúrguer Angus · Queijo prato ou cheddar',
+    removable:['Queijo']
+  }
+};
 
-<div class="item">
-<span>Batata Cheddar & Bacon</span>
-<span class="price">R$ 14,99</span>
-</div>
-<div class="desc">Batata frita com cheddar cremoso e bacon crocante.</div>
+const PONTOS = ['Ao Ponto','Smash 🔥'];
+const QUEIJOS = ['Queijo Prato','Cheddar','Sem queijo'];
+const EXTRAS = [
+  {name:'Bacon extra',price:4.00},
+  {name:'Ovo frito',price:3.00},
+  {name:'Cheddar extra',price:3.50},
+  {name:'Molho extra',price:2.00},
+  {name:'Cebola caramelizada',price:3.00},
+  {name:'Picles extra',price:1.50},
+];
 
-</div>
+// ═══ STATE ═══════════════════════════════════════════
+let cart = [];
+let sheetState = {};
+let orderType = 'delivery'; // delivery | retirada | balcao
 
-<div>
+// ═══ UTILS ════════════════════════════════════════════
+const fmt = v => 'R$ '+Number(v).toFixed(2).replace('.',',');
 
-<div class="section-title">🥤 BEBIDAS</div>
+function toast(msg,ms=2200){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.style.display='block';
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.style.display='none',ms);
+}
 
-<div class="item">
-<span>Refrigerante lata</span>
-<span class="price">R$ 4,99</span>
-</div>
+function navScroll(id,el){
+  document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
 
-<div class="item">
-<span>Água / Água com gás</span>
-<span class="price">R$ 3,99</span>
-</div>
+function outsideClose(e,id){
+  if(e.target===document.getElementById(id)){
+    document.getElementById(id).classList.remove('open');
+  }
+}
 
-<div class="item">
-<span>🍺 Chopp 500ml</span>
-<span class="price">R$ 14,99</span>
-</div>
+// ═══ CUSTOMIZE SHEET ══════════════════════════════════
+function openCustomize(key){
+  const b = BURGERS[key];
+  sheetState = {key,base:b.price,doublePrice:b.doublePrice,extras:[],remove:[],ponto:PONTOS[0],queijo:QUEIJOS[0],isDouble:false,qty:1};
 
-</div>
+  document.getElementById('cs-title').textContent = b.name;
+  document.getElementById('cs-price').textContent = fmt(b.price);
+  document.getElementById('cs-desc').textContent = b.desc;
+  document.getElementById('sheet-qty').textContent = '1';
 
-</div>
-</div>
+  // Ponto
+  buildChips('opt-ponto',PONTOS,null,v=>{sheetState.ponto=v;updateAddBtn();});
+  selectChip('opt-ponto',PONTOS[0]);
 
-<div class="toppings">
-🍔 <b>Todos os burgers são preparados na hora na chapa quente.</b><br>
-Ingredientes frescos • Carne Angus selecionada • Pão brioche macio
-</div>
+  // Queijo
+  buildChips('opt-queijo',QUEIJOS,null,v=>{sheetState.queijo=v;updateAddBtn();});
+  selectChip('opt-queijo',QUEIJOS[0]);
 
-</div>
+  // Duplo
+  const dOpts=[{label:'Não',val:false},{label:`Sim (+${fmt(b.doublePrice - b.price)})`,val:true}];
+  const dWrap=document.getElementById('opt-duplo');
+  dWrap.innerHTML='';
+  dOpts.forEach(o=>{
+    const chip=document.createElement('div');
+    chip.className='opt-chip'+(o.val===false?' selected':'');
+    chip.textContent=o.label;
+    chip.onclick=()=>{
+      sheetState.isDouble=o.val;
+      dWrap.querySelectorAll('.opt-chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      updateAddBtn();
+    };
+    dWrap.appendChild(chip);
+  });
 
+  // Extras
+  const eWrap=document.getElementById('opt-extras');
+  eWrap.innerHTML='';
+  EXTRAS.forEach(ex=>{
+    const chip=document.createElement('div');
+    chip.className='opt-chip';
+    chip.innerHTML=`${ex.name} <span class="extra-price">+${fmt(ex.price)}</span>`;
+    chip.onclick=()=>{
+      chip.classList.toggle('selected');
+      if(chip.classList.contains('selected')) sheetState.extras.push(ex);
+      else sheetState.extras=sheetState.extras.filter(e=>e.name!==ex.name);
+      updateAddBtn();
+    };
+    eWrap.appendChild(chip);
+  });
+
+  // Remover
+  const rWrap=document.getElementById('opt-remove');
+  rWrap.innerHTML='';
+  b.removable.forEach(ing=>{
+    const chip=document.createElement('div');
+    chip.className='opt-chip remove-chip';
+    chip.textContent='Sem '+ing;
+    chip.onclick=()=>{
+      chip.classList.toggle('selected');
+      if(chip.classList.contains('selected')) sheetState.remove.push(ing);
+      else sheetState.remove=sheetState.remove.filter(r=>r!==ing);
+    };
+    rWrap.appendChild(chip);
+  });
+
+  updateAddBtn();
+  document.getElementById('customize-overlay').classList.add('open');
+}
+
+function buildChips(wrapperId,options,_,onSelect){
+  const wrap=document.getElementById(wrapperId);
+  wrap.innerHTML='';
+  options.forEach(opt=>{
+    const chip=document.createElement('div');
+    chip.className='opt-chip';
+    chip.textContent=opt;
+    chip.onclick=()=>{
+      wrap.querySelectorAll('.opt-chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      onSelect(opt);
+    };
+    wrap.appendChild(chip);
+  });
+}
+
+function selectChip(wrapperId,val){
+  document.querySelectorAll(`#${wrapperId} .opt-chip`).forEach(c=>{
+    if(c.textContent.startsWith(val)) c.classList.add('selected');
+  });
+}
+
+function getSheetPrice(){
+  let p = sheetState.isDouble ? sheetState.doublePrice : sheetState.base;
+  sheetState.extras.forEach(e=>p+=e.price);
+  return p * sheetState.qty;
+}
+
+function updateAddBtn(){
+  document.getElementById('add-btn-price').textContent = fmt(getSheetPrice());
+}
+
+function changeSheetQty(v){
+  sheetState.qty = Math.max(1, sheetState.qty+v);
+  document.getElementById('sheet-qty').textContent = sheetState.qty;
+  updateAddBtn();
+}
+
+function confirmAddToCart(){
+  const b = BURGERS[sheetState.key];
+  const details = [];
+  details.push(`Ponto: ${sheetState.ponto}`);
+  details.push(`Queijo: ${sheetState.queijo}`);
+  if(sheetState.isDouble) details.push('🔥 DUPLO');
+  if(sheetState.extras.length) details.push('Extras: '+sheetState.extras.map(e=>e.name).join(', '));
+  if(sheetState.remove.length) details.push('Sem: '+sheetState.remove.join(', '));
+
+  const unitPrice = sheetState.isDouble ? sheetState.doublePrice : sheetState.base;
+  const extraCost = sheetState.extras.reduce((a,e)=>a+e.price,0);
+
+  cart.push({
+    id:Date.now(),
+    name:b.name,
+    unitPrice:unitPrice+extraCost,
+    qty:sheetState.qty,
+    details:details.join(' · ')
+  });
+
+  document.getElementById('customize-overlay').classList.remove('open');
+  updateCartFloat();
+  toast(`${b.name} adicionado! 🎉`);
+}
+
+// ═══ SIMPLE ADD ═══════════════════════════════════════
+function addSimple(name,price){
+  const ex = cart.find(c=>c.name===name&&!c.details);
+  if(ex){ex.qty++;} else {cart.push({id:Date.now(),name,unitPrice:price,qty:1,details:''});}
+  updateCartFloat();
+  toast(`${name} adicionado! 🎉`);
+}
+
+// ═══ CART FLOAT ═══════════════════════════════════════
+function updateCartFloat(){
+  const total = cart.reduce((a,c)=>a+(c.unitPrice*c.qty),0);
+  const count = cart.reduce((a,c)=>a+c.qty,0);
+  const el = document.getElementById('cart-float');
+  if(count===0){el.classList.remove('visible');return;}
+  el.classList.add('visible');
+  document.getElementById('cart-badge').textContent=count;
+  document.getElementById('cart-total-label').textContent=fmt(total);
+}
+
+// ═══ CART SHEET ═══════════════════════════════════════
+function openCart(){
+  renderCartSheet();
+  document.getElementById('cart-overlay').classList.add('open');
+}
+
+function closeCart(){
+  document.getElementById('cart-overlay').classList.remove('open');
+}
+
+function selectOrderType(type){
+  orderType = type;
+  ['delivery','retirada','balcao'].forEach(t=>{
+    document.getElementById('ot-'+t).classList.toggle('active', t===type);
+  });
+  renderCartSheet();
+}
+
+function renderCartSheet(){
+  const wrap=document.getElementById('cart-items-list');
+  if(!cart.length){wrap.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">Seu carrinho está vazio.</p>';return;}
+  wrap.innerHTML=cart.map(c=>`
+    <div class="cart-item">
+      <div class="ci-top">
+        <div class="ci-name">${c.name}${c.qty>1?' ×'+c.qty:''}</div>
+        <div class="ci-price">${fmt(c.unitPrice*c.qty)}</div>
+      </div>
+      ${c.details?`<div class="ci-details">${c.details}</div>`:''}
+      <div class="ci-row">
+        <div class="ci-qty-wrap">
+          <button class="ci-qty-btn" onclick="cartQty(${c.id},-1)">−</button>
+          <span class="ci-qty">${c.qty}</span>
+          <button class="ci-qty-btn" onclick="cartQty(${c.id},1)">+</button>
+        </div>
+        <button class="ci-remove" onclick="cartRemove(${c.id})">Remover</button>
+      </div>
+    </div>
+  `).join('');
+  renderCartTotals('cart-totals');
+}
+
+function cartQty(id,v){
+  const i=cart.find(c=>c.id===id);
+  if(!i)return;
+  i.qty+=v;
+  if(i.qty<=0) cart=cart.filter(c=>c.id!==id);
+  renderCartSheet();
+  updateCartFloat();
+}
+function cartRemove(id){
+  cart=cart.filter(c=>c.id!==id);
+  renderCartSheet();
+  updateCartFloat();
+}
+
+function renderCartTotals(id){
+  const sub=cart.reduce((a,c)=>a+(c.unitPrice*c.qty),0);
+  const fee = orderType==='delivery' ? DELIVERY_FEE : 0;
+  const total=sub+fee;
+  const feeLabel = orderType==='delivery'
+    ? `<span class="ct-val">${fmt(fee)}</span>`
+    : `<span class="ct-val" style="color:#6dc96d">Grátis</span>`;
+  const typeLabel = orderType==='delivery'?'🛵 Delivery':orderType==='retirada'?'🏃 Retirada':'🪑 Balcão';
+  document.getElementById(id).innerHTML=`
+    <div class="ct-row"><span class="ct-label">Subtotal</span><span class="ct-val">${fmt(sub)}</span></div>
+    <div class="ct-row"><span class="ct-label">Tipo</span><span class="ct-val">${typeLabel}</span></div>
+    <div class="ct-row"><span class="ct-label">Taxa de entrega</span>${feeLabel}</div>
+    <div class="ct-row total-row">
+      <span class="ct-label">TOTAL</span>
+      <span class="ct-val" style="color:var(--gold);font-family:'Bebas Neue';font-size:24px">${fmt(total)}</span>
+    </div>
+  `;
+}
+
+// ═══ CLIENTES (localStorage) ══════════════════════════
+function phoneKey(tel){ return 'cli_'+tel.replace(/\D/g,''); }
+
+function saveCliente(tel,nome,end,ref){
+  const key = phoneKey(tel);
+  const data = {nome, tel, end:end||'', ref:ref||'', updatedAt: new Date().toISOString()};
+  try{ localStorage.setItem(key, JSON.stringify(data)); }catch(e){}
+}
+
+function loadCliente(tel){
+  try{
+    const raw = localStorage.getItem(phoneKey(tel));
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+
+let lookupTimer = null;
+function lookupCliente(val){
+  clearTimeout(lookupTimer);
+  const banner = document.getElementById('cliente-found');
+  const txt    = document.getElementById('cliente-found-txt');
+  const digits = val.replace(/\D/g,'');
+  if(digits.length < 10){ banner.style.display='none'; return; }
+  lookupTimer = setTimeout(()=>{
+    const c = loadCliente(digits);
+    if(c){
+      // preenche campos automaticamente
+      document.getElementById('f-nome').value = c.nome||'';
+      if(c.end) document.getElementById('f-end').value = c.end;
+      if(c.ref) document.getElementById('f-ref').value = c.ref;
+      txt.textContent = `Olá, ${c.nome}! Seus dados foram preenchidos automaticamente 🎉`;
+      banner.style.display='flex';
+    } else {
+      banner.style.display='none';
+    }
+  }, 400);
+}
+
+// ═══ CHECKOUT ═════════════════════════════════════════
+function openCheckout(){
+  if(!cart.length){toast('Carrinho vazio!');return;}
+  document.getElementById('cart-overlay').classList.remove('open');
+  // pix key
+  document.getElementById('pix-key-display').textContent=PIX_KEY;
+  // QR code
+  const canvas=document.getElementById('pix-qr-canvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // use QRCode lib to draw into a temp div then copy
+  const tmp=document.createElement('div');
+  tmp.style.display='none';
+  document.body.appendChild(tmp);
+  new QRCode(tmp,{text:PIX_KEY,width:168,height:168,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
+  setTimeout(()=>{
+    const img=tmp.querySelector('img')||tmp.querySelector('canvas');
+    if(img){
+      const qrImg=new Image();
+      qrImg.onload=()=>{
+        ctx.fillStyle='#ffffff';
+        ctx.roundRect?ctx.roundRect(0,0,180,180,8):ctx.fillRect(0,0,180,180);
+        ctx.fill();
+        ctx.drawImage(qrImg,6,6,168,168);
+      };
+      qrImg.src=img.src||(img.toDataURL&&img.toDataURL());
+    }
+    document.body.removeChild(tmp);
+  },100);
+  // show/hide address fields
+  const showAddr=orderType==='delivery';
+  document.getElementById('delivery-fields').style.display=showAddr?'block':'none';
+  renderCartTotals('checkout-totals');
+  document.getElementById('checkout-overlay').classList.add('open');
+}
+
+function copyPix(){
+  navigator.clipboard.writeText(PIX_KEY).then(()=>{
+    const btn=document.getElementById('pix-copy-btn');
+    btn.textContent='Copiado ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied');},2500);
+  }).catch(()=>toast('Copie manualmente: '+PIX_KEY));
+}
+
+function validate(){
+  let ok=true;
+  const base=[['f-nome','err-nome'],['f-tel','err-tel']];
+  const addrFields=[['f-end','err-end'],['f-ref','err-ref']];
+  const fields = orderType==='delivery' ? [...base,...addrFields] : base;
+  // clear all errors first
+  [...base,...addrFields].forEach(([,eid])=>document.getElementById(eid).textContent='');
+  fields.forEach(([fid,eid])=>{
+    const v=document.getElementById(fid).value.trim();
+    if(!v){document.getElementById(eid).textContent='Campo obrigatório';ok=false;}
+  });
+  return ok;
+}
+
+function finalizeOrder(){
+  if(!validate())return;
+  const nome=document.getElementById('f-nome').value.trim();
+  const tel=document.getElementById('f-tel').value.trim();
+  const end=orderType==='delivery'?document.getElementById('f-end').value.trim():'';
+  const ref=orderType==='delivery'?document.getElementById('f-ref').value.trim():'';
+  const obs=document.getElementById('f-obs').value.trim();
+
+  const sub=cart.reduce((a,c)=>a+(c.unitPrice*c.qty),0);
+  const fee=orderType==='delivery'?DELIVERY_FEE:0;
+  const total=sub+fee;
+  const typeEmoji = orderType==='delivery'?'🛵 Delivery':orderType==='retirada'?'🏃 Retirada':'🪑 Balcão';
+
+  let msg=`👑 *NOVO PEDIDO — KING ANGUS* 👑\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`📦 *Tipo:* ${typeEmoji}\n`;
+  msg+=`👤 *Cliente:* ${nome}\n`;
+  msg+=`📞 *Telefone:* ${tel}\n`;
+  if(orderType==='delivery'){
+    msg+=`📍 *Endereço:* ${end}\n`;
+    msg+=`📌 *Referência:* ${ref}\n`;
+  }
+  if(obs) msg+=`📝 *Obs:* ${obs}\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`🛒 *ITENS DO PEDIDO:*\n`;
+  cart.forEach(c=>{
+    msg+=`\n▸ *${c.name}* × ${c.qty} — ${fmt(c.unitPrice*c.qty)}`;
+    if(c.details) msg+=`\n   _${c.details}_`;
+  });
+  msg+=`\n\n━━━━━━━━━━━━━━━━━━━━━\n`;
+  if(orderType==='delivery') msg+=`📦 *Taxa de entrega:* ${fmt(fee)}\n`;
+  msg+=`💰 *TOTAL GERAL:* *${fmt(total)}*\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`💳 *Pagamento:* PIX\n`;
+  msg+=`🔑 *Chave PIX:* ${PIX_KEY}\n`;
+  msg+=`\n⚠️ _Envie o comprovante do PIX para confirmar o pedido!_`;
+
+  // salvar cliente
+  saveCliente(tel, nome, end, ref);
+
+  const url=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+
+  cart=[];
+  orderType='delivery';
+  document.getElementById('checkout-overlay').classList.remove('open');
+  updateCartFloat();
+  toast('Pedido enviado! Aguarde a confirmação 🎉',4000);
+}
+
+// ═══ REFRIGERANTE ════════════════════════════════════
+const REFRI_FLAVORS = ['🍎 Coca-Cola','🟡 Guaraná Antarctica','🟠 Fanta Laranja','🟣 Fanta Uva','🍋 Sprite','🫧 Schweppes'];
+let refriState = {flavor:null, qty:1};
+
+function openRefrigerante(){
+  refriState = {flavor:null, qty:1};
+  document.getElementById('refri-qty').textContent = '1';
+  const wrap = document.getElementById('refri-flavors');
+  wrap.innerHTML = '';
+  REFRI_FLAVORS.forEach(f=>{
+    const chip = document.createElement('div');
+    chip.className = 'opt-chip';
+    chip.textContent = f;
+    chip.onclick = ()=>{
+      wrap.querySelectorAll('.opt-chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      refriState.flavor = f;
+      const btn = document.getElementById('refri-add-btn');
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = `<span>ADICIONAR AO CARRINHO</span><span>R$ ${(4.99*refriState.qty).toFixed(2).replace('.',',')}</span>`;
+    };
+    wrap.appendChild(chip);
+  });
+  document.getElementById('refri-overlay').classList.add('open');
+}
+
+function changeRefriQty(v){
+  refriState.qty = Math.max(1, refriState.qty + v);
+  document.getElementById('refri-qty').textContent = refriState.qty;
+  if(refriState.flavor){
+    const btn = document.getElementById('refri-add-btn');
+    btn.innerHTML = `<span>ADICIONAR AO CARRINHO</span><span>R$ ${(4.99*refriState.qty).toFixed(2).replace('.',',')}</span>`;
+  }
+}
+
+function confirmRefri(){
+  if(!refriState.flavor) return;
+  cart.push({id:Date.now(), name:'🥤 Refrigerante — '+refriState.flavor, unitPrice:4.99, qty:refriState.qty, details:''});
+  document.getElementById('refri-overlay').classList.remove('open');
+  updateCartFloat();
+  toast(refriState.flavor+' adicionado! 🎉');
+}
+
+// ═══ INIT ══════════════════════════════════════════════
+document.getElementById('pix-key-display').textContent = PIX_KEY;
+</script>
 </body>
 </html>
